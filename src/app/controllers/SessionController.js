@@ -21,7 +21,6 @@ class SessionController {
     if (!user) {
       return res.status(401).json({ error: 'User not found!' });
     }
-    console.log(password);
 
     if (!(await user.checkPassword(password))) {
       return res.status(401).json({ error: 'invalidate password!' });

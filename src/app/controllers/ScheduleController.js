@@ -1,4 +1,4 @@
-import { startOfDay, endOfDay, parseISO, isBefore } from 'date-fns';
+import { startOfDay, endOfDay, parseISO } from 'date-fns';
 import { Op } from 'sequelize';
 import Appointments from '../models/Appointment';
 import User from '../models/User';

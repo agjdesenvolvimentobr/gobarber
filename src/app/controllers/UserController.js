@@ -4,6 +4,9 @@ import User from '../models/User';
 
 class UserController {
   async store(req, res) {
+    /**
+     * Check data user
+     */
     const schema = Yup.object().shape({
       name: Yup.string().required(),
       email: Yup.string()
@@ -17,16 +20,24 @@ class UserController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails!' });
     }
-
+    /**
+     * Validate if user exists.
+     */
     const userExists = await User.findOne({ where: { email: req.body.email } });
     if (userExists) {
       return res.status(400).json({ error: 'E-mail already registered!' });
     }
+    /**
+     * Create user
+     */
     const { id, name, email, provider } = await User.create(req.body);
     return res.json({ id, name, email, provider });
   }
 
   async update(req, res) {
+    /**
+     * Check data user
+     */
     const schema = Yup.object().shape({
       name: Yup.string(),
       email: Yup.string().email(),
@@ -40,13 +51,14 @@ class UserController {
         password ? field.required().oneOf([Yup.ref('password')]) : field
       ),
     });
-
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails!' });
     }
-
     const { email, oldPassword } = req.body;
     const user = await User.findByPk(req.userId);
+    /**
+     * check if email exist.
+     */
     if (email && email !== user.email) {
       const userExists = await User.findOne({
         where: { email },
@@ -55,12 +67,13 @@ class UserController {
         return res.status(400).json({ error: 'E-mail already registered!' });
       }
     }
+    /**
+     * checking if the password is valid
+     */
     if (oldPassword && !(await user.checkPassword(oldPassword))) {
       return res.status(401).json({ error: 'Invalidate password!' });
     }
-
     const { id, name, provider } = await user.update(req.body);
-
     return res.json({ id, name, email, provider });
   }
 }

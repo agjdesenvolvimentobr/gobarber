@@ -17,7 +17,9 @@ class ScheduleController {
     if (!checkUserProvider) {
       res.status(401).json({ error: 'User is not provider!' });
     }
-
+    /**
+     * Get all appointments.
+     */
     const { date } = req.query;
     const ISODate = parseISO(date);
     const appointments = await Appointments.findAll({

@@ -10,7 +10,7 @@ export default async (req, res, next) => {
   const [, token] = authHeader.split(' ');
   try {
     /* O promisify é uma função do node, que transforma funções com callback
-    em funções que possam ser usadas com await. */
+    em funções que possam ser usadas com async/await. */
 
     const decoded = await promisify(jwt.verify)(token, authConfig.apiKey);
     req.userId = decoded.id;

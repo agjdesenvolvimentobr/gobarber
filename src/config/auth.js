@@ -1,4 +1,4 @@
 export default {
-  apiKey: '760e24220b354fbdd1c09bc889a83061',
+  apiKey: process.env.APP_SECRET,
   expiresIn: '7d',
 };
